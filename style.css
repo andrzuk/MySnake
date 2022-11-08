@@ -1,0 +1,95 @@
+body { 
+    color: #777; 
+    font-family: sans-serif; 
+}
+div#page-title {
+    text-align: center;
+    padding: 2em;
+    color: #900;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: underline;
+}
+div#player-welcome {
+    text-align: center;
+    font-size: 2em;
+    color: #090;
+}
+div#page-footer {
+    text-align: center;
+    padding: 2em;
+}
+span#author {
+    font-size: 0.75em;
+    padding-top: 1em;
+}
+div#main-container { 
+    width: 100%; 
+    margin-top: 20px; 
+    text-align: center; 
+}
+div#game-container { 
+    display: inline-flex; 
+}
+canvas#game-canvas { 
+    width: 900px; 
+    height: 420px; 
+    background: #eee; 
+    border: 1px solid #999; 
+}
+span#game-panel { 
+    display: inline-block; 
+    width: 250px; 
+    height: 420px; 
+    border: 1px solid #999; 
+    background: #ddd; 
+    margin-left: 5px; 
+}
+button.move-buttons { 
+    width: 50px; 
+    height: 50px; 
+    position: relative; 
+    font-size: 1.5em; 
+    margin: 5px 0; 
+}
+button.play-buttons { 
+    width: 80px; 
+    position: relative; 
+    margin: 20px 0; 
+}
+span#score { 
+    font-weight: bold; 
+    font-size: 2.5em; 
+    margin-right: 15px; 
+}
+span#time-period { 
+    margin-right: 15px; 
+}
+p.separator { 
+    line-height: 20px; 
+    text-align: center; 
+    font-size: 0.95em; 
+}
+p.separator a#show-scores { 
+    line-height: 10px; 
+}
+table#scores-list { 
+    width: 100%; 
+}
+table#scores-list tbody tr th { 
+    padding: 0 10px 15px 10px; 
+    border-bottom: 1px solid #999; 
+}
+table#scores-list tbody tr td { 
+    padding: 0 10px; 
+    border-bottom: 1px dotted #ccc; 
+}
+table#scores-list tbody tr td.scores-saved { 
+    text-align: center; 
+}
+table#scores-list tbody tr td.scores-score { 
+    text-align: right; 
+    font-weight: bold; 
+    font-size: 1.2em; 
+    color: blue; 
+}

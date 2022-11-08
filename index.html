@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+			integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+			crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
+			integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" 
+			crossorigin="anonymous">
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
+			crossorigin="anonymous">
+		</script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
+			integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" 
+			crossorigin="anonymous">
+		</script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" crossorigin="anonymous">
+		<link rel="stylesheet" href="style.css">
+		<script type="text/javascript" src="script.js"></script>
+		<title>My Snake &copy; Andrzej Żukowski</title>
+		<link rel="shortcut icon" href="favicon.ico">
+	</head>
+	<body>
+		<div id="page-title">MySnake</div>
+		<div id="player-welcome">Welcome!</div>
+		<div id="page-area">
+			<div id="main-container">
+				<div id="game-container">
+					<canvas id="game-canvas">Canvas nie jest obsługiwany przez tą przeglądarkę.</canvas>
+					<span id="game-panel">
+						<table width="100%">
+							<tr>
+								<td colspan="2" style="text-align: center; font-size: 1.2em; font-weight: bold; color: #c00;">
+									<div id="player-caption"></div>
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: left; padding-left: 15px;"><b>Score:</b></td>
+								<td style="text-align: right;"><span id="score">0</span></td>
+							</tr>
+						</table>
+						<p class="separator"><a id="show-scores" href="#">Scores List</a><hr style="margin: 0;"></p>
+						<table width="100%">
+							<tr>
+								<td style="text-align: left; padding-left: 15px;"><b>Speed:</b></td>
+								<td style="text-align: right; padding: 0 15px 0 5px;">
+									<span id="time-period">
+										<select id="period" class="form-control">
+											<option value="20">Ultra fast (40x)</option>
+											<option value="40">Super fast (20x)</option>
+											<option value="60">Very fast (10x)</option>
+											<option value="80" selected>Faster (5x)</option>
+											<option value="100">Little faster (4x)</option>
+											<option value="150">Medium (3x)</option>
+											<option value="200">Slow (2x)</option>
+											<option value="250">Very slow (1x)</option>
+										</select>
+									</span>
+								</td>
+							</tr>
+						</table>
+						<table width="100%">
+							<tr>
+								<td width="50%" style="text-align: center;"><button id="play-start" class="play-buttons btn btn-success">Play</button></td>
+								<td width="50%" style="text-align: center;"><button id="play-pause" class="play-buttons btn btn-danger">Pause</button></td>
+							</tr>
+						</table>
+						<table width="100%">
+							<tr>
+								<td colspan="3" style="text-align: center;"><button id="move-up" class="move-buttons btn btn-primary">&#9650;</button></td>
+							</tr>
+							<tr>
+								<td width="33%" style="text-align: right;"><button id="move-left" class="move-buttons btn btn-primary">&#9668;</button></td>
+								<td width="34%" style="text-align: center;"><button id="move-down" class="move-buttons btn btn-primary">&#9660;</button></td>
+								<td width="33%" style="text-align: left;"><button id="move-right" class="move-buttons btn btn-primary">&#9658;</button></td>
+							</tr>
+						</table>
+					</span>
+				</div>
+				<div class="modal fade screen-centered" id="player-modal" role="dialog">
+					<div class="modal-dialog" style="max-width: 300px;">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Witaj!</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<p>Podaj swoje imię:</p>
+								<input type="text" class="form-control" id="player-name">
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="save-player-name" class="btn btn-success" data-dismiss="modal">Zapisz</button>
+								<button type="button" id="cancel-player-name" class="btn btn-warning" data-dismiss="modal">Anuluj</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="scores-modal" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Najlepsze wyniki (Top 20)</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<table id="scores-list" align="center">
+									<tbody>
+										<tr><td style="text-align: center;"><img src="loader.gif"></td></tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-warning" data-dismiss="modal">Zamknij</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="page-footer">
+			<a href="http://exe-system.pl" target="_blank" class="footer-link"><i class="bi bi-globe"></i></a>
+			&nbsp; 
+			<a href="https://github.com/andrzuk" target="_blank" class="footer-link"><i class="bi bi-github"></i></a>
+			&nbsp; 
+			<a href="https://www.facebook.com/MySiteInWeb/" target="_blank" class="footer-link"><i class="bi bi-facebook"></i></a>
+			&nbsp; 
+			<a href="https://pl.linkedin.com/in/andrzejzukowski" target="_blank" class="footer-link"><i class="bi bi-linkedin"></i></a>
+			&nbsp; 
+			<a href="https://www.instagram.com/andrzej.zukowski/" target="_blank" class="footer-link"><i class="bi bi-instagram"></i></a>
+			&nbsp; 
+			<a href="https://twitter.com/andy_zukowski" target="_blank" class="footer-link"><i class="bi bi-twitter"></i></a>
+			&nbsp; 
+			<a href="https://andrzuk.blogspot.com/" target="_blank" class="footer-link"><i class="bi bi-rss"></i></a>
+			<br>
+			<span id="author">&copy; Andrzej Żukowski 2022</span>
+		</div>
+	</body>
+</html>
