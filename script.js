@@ -1,4 +1,5 @@
 const API_URL = "https://andrzej.zukowski.edu.pl/apps/snake/api/";
+const STORE_LOCAL = true;
 
 $(document).ready(function() {
 	
@@ -44,25 +45,42 @@ $(document).ready(function() {
 			paintCell(this.diamond.x, this.diamond.y, "#0c0");
 		},
 		saveScore: function() {
-			$.post(API_URL + "store_score.php", { player: player.name, score: gameScore }, function(data, status) {
-				var response = JSON.parse(data);
-				player.name = response.player;
-				player.score = response.score;
-				$("div#player-caption").text(player.name + " (" + player.score + ")");
-			});
+			if (STORE_LOCAL) {
+				localStorage.setItem('Snake Player Name', player.name);
+				localStorage.setItem('Snake Player Score', gameScore);
+				localStorage.setItem('Snake Score Saved', new Date().toISOString().split('T')[0]);
+				$("div#player-caption").text(player.name + " (" + gameScore + ")");
+			}
+			else {
+				$.post(API_URL + "store_score.php", { player: player.name, score: gameScore }, function(data, status) {
+					var response = JSON.parse(data);
+					player.name = response.player;
+					player.score = response.score;
+					$("div#player-caption").text(player.name + " (" + player.score + ")");
+				});	
+			}
 		},
 		getScores: function() {
 			$('div#scores-modal').modal('show');
 			$("table#scores-list tbody").empty();
 			var tableHeader = '<tr><th width="10%">Pozycja</th><th width="25%">Gracz</th><th width="25%">Adres IP</th><th width="25%" style="text-align: center;">Data</th><th width="15%" style="text-align: right;">Punkty</th></tr>';
 			$("table#scores-list tbody").append(tableHeader);
-			$.get(API_URL + "get_scores.php", function(data, status) {
-				var response = JSON.parse(data);
-				jQuery.each(response, function(index, item) {
-					var tableRow = "<tr><td>" + (index + 1).toString() + "</td><td>" + item.player + "</td><td>" + item.ip + "</td><td class='scores-saved'>" + item.saved + "</td><td class='scores-score'>" + item.score + "</td></tr>";
-					$("table#scores-list tbody").append(tableRow);
-				});
-			});
+			if (STORE_LOCAL) {
+				var playerName = localStorage.getItem('Snake Player Name');
+				var gameScore = localStorage.getItem('Snake Player Score');
+				var scoreSaved = localStorage.getItem('Snake Score Saved');
+				var tableRow = "<tr><td>-</td><td>" + playerName + "</td><td>-</td><td class='scores-saved'>" + scoreSaved + "</td><td class='scores-score'>" + gameScore + "</td></tr>";
+				$("table#scores-list tbody").append(tableRow);
+			}
+			else {
+				$.get(API_URL + "get_scores.php", function(data, status) {
+					var response = JSON.parse(data);
+					jQuery.each(response, function(index, item) {
+						var tableRow = "<tr><td>" + (index + 1).toString() + "</td><td>" + item.player + "</td><td>" + item.ip + "</td><td class='scores-saved'>" + item.saved + "</td><td class='scores-score'>" + item.score + "</td></tr>";
+						$("table#scores-list tbody").append(tableRow);
+					});
+				});	
+			}
 		}
 	};
 	
@@ -145,12 +163,19 @@ $(document).ready(function() {
 			this.getScore();
 		},
 		getScore: function() {
-			$.post(API_URL + "get_score.php", { player: this.name }, function(data, status) {
-				var response = JSON.parse(data);
-				this.name = response.player;
-				this.score = response.score;
-				$("div#player-caption").text(this.name + " (" + this.score + ")");
-			});
+			if (STORE_LOCAL) {
+				var playerName = localStorage.getItem('Snake Player Name') || player.name;
+				var gameScore = localStorage.getItem('Snake Player Score') || player.score;
+				$("div#player-caption").text(playerName + " (" + gameScore + ")");
+			}
+			else {
+				$.post(API_URL + "get_score.php", { player: this.name }, function(data, status) {
+					var response = JSON.parse(data);
+					this.name = response.player;
+					this.score = response.score;
+					$("div#player-caption").text(this.name + " (" + this.score + ")");
+				});
+			}
 		}	
 	};
 	
